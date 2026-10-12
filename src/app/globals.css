@@ -45,3 +45,31 @@
 body {
   font-family: var(--font-hind), system-ui, sans-serif;
 }
+
+/* ---------- Price ticker (endless scrolling strip) ---------- */
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker-scroll 90s linear infinite;
+}
+
+/* Pause when the mouse is over the ticker */
+.ticker:hover .ticker-track {
+  animation-play-state: paused;
+}
+
+/* Respect people who turn animations off in their system settings */
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track {
+    animation: none;
+  }
+}
