@@ -1,1 +1,47 @@
 @import "tailwindcss";
+
+@plugin "daisyui";
+
+/* Our custom green theme, matched to the Figma tokens */
+@plugin "daisyui/theme" {
+  name: "bazardor";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+
+  --color-base-100: oklch(100% 0 0);
+  --color-base-200: oklch(98% 0.005 150);
+  --color-base-300: oklch(93% 0.01 150);
+  --color-base-content: oklch(26.6% 0.065 152.934);
+
+  --color-primary: oklch(52.7% 0.154 150.069);
+  --color-primary-content: oklch(98% 0.01 150);
+  --color-secondary: oklch(26.6% 0.065 152.934);
+  --color-secondary-content: oklch(98% 0.01 150);
+  --color-accent: oklch(62.7% 0.194 149.214);
+  --color-accent-content: oklch(98% 0.01 150);
+  --color-neutral: oklch(26.6% 0.065 152.934);
+  --color-neutral-content: oklch(98% 0.01 150);
+
+  --color-info: oklch(62% 0.17 240);
+  --color-info-content: oklch(98% 0.01 240);
+  --color-success: oklch(62.7% 0.194 149.214);
+  --color-success-content: oklch(98% 0.01 150);
+  --color-warning: oklch(80% 0.16 85);
+  --color-warning-content: oklch(25% 0.05 85);
+  --color-error: oklch(57.7% 0.245 27.325);
+  --color-error-content: oklch(98% 0.01 27);
+
+  --radius-selector: 9999px;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+body {
+  font-family: var(--font-hind), system-ui, sans-serif;
+}
