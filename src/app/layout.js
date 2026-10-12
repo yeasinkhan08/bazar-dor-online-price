@@ -1,5 +1,6 @@
 import { Hind_Siliguri } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/Navbar";
 
 // Bengali-friendly font from Google Fonts
 const hind = Hind_Siliguri({
@@ -17,7 +18,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="bn" data-theme="bazardor">
-      <body className={`${hind.variable} antialiased`}>{children}</body>
+      <body className={`${hind.variable} antialiased`}>
+        <Navbar />
+        {children}
+      </body>
     </html>
   );
 }
