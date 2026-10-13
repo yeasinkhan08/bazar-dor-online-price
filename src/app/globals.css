@@ -67,7 +67,6 @@ body {
   animation-play-state: paused;
 }
 
-/* Respect people who turn animations off in their system settings */
 @media (prefers-reduced-motion: reduce) {
   .ticker-track {
     animation: none;

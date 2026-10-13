@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function CategoryLinks({ categories }) {
+export function CategoryLinks({ categories }) {
+  // The current page path, e.g. "/category/chal"
   const pathname = usePathname();
 
   return (

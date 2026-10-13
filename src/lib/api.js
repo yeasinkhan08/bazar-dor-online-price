@@ -1,11 +1,20 @@
-// The main API, and a backup in case the first one is down
+import { connection } from "next/server";
+
+// The official API first, then two backups in case it fails
 const BASE_URLS = [
+  "https://openapi.programming-hero.com/api/bazardor",
   "https://api.api-store.workers.dev/api/bazardor",
   "https://api.abcz.workers.dev/api/bazardor",
 ];
 
-// Tries each API in order. Returns the JSON, or throws if both fail.
-async function request(path) {
+// How long (in milliseconds) we reuse a saved answer: 5 minutes
+const CACHE_TIME = 5 * 60 * 1000;
+
+// globalThis keeps the saved answers alive even when the dev server reloads files
+const saved = (globalThis.bazardorCache ??= {});
+
+// Asks each API in order. Returns the JSON, or throws if all of them fail.
+async function fetchFromApi(path) {
   let lastError;
   for (const base of BASE_URLS) {
     try {
@@ -17,6 +26,42 @@ async function request(path) {
     }
   }
   throw lastError;
+}
+
+// Same as fetchFromApi, but remembers the answer so we call the API far less
+async function request(path) {
+  // Tell Next.js this runs per request (needed because we use Date.now() below)
+  await connection();
+
+  const entry = saved[path];
+
+  // 1. We have a fresh answer (or one that is still loading): reuse it
+  if (entry && Date.now() - entry.time < CACHE_TIME) {
+    return entry.promise;
+  }
+
+  // 2. Otherwise ask the API and remember the answer
+  const promise = fetchFromApi(path);
+  saved[path] = { promise, time: Date.now() };
+
+  try {
+    const data = await promise;
+    saved[path].data = data;
+    return data;
+  } catch (error) {
+    // 3. The API failed: use the last good answer if we still have one
+    if (entry && entry.data) {
+      saved[path] = {
+        promise: Promise.resolve(entry.data),
+        time: Date.now(),
+        data: entry.data,
+      };
+      return entry.data;
+    }
+    // No old answer: forget this failure so the next request tries again
+    delete saved[path];
+    throw error;
+  }
 }
 
 // All products, or only one category's products.
