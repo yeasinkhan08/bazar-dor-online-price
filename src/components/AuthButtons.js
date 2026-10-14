@@ -56,20 +56,29 @@ export default function AuthButtons() {
 
   return (
     <div className="dropdown dropdown-end">
-      <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
+      <div
+        tabIndex={0}
+        role="button"
+        className="btn btn-ghost h-auto min-h-0 gap-2 rounded-full px-2 py-1"
+      >
         {user.image ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={user.image}
             alt={user.name}
             referrerPolicy="no-referrer"
-            className="h-9 w-9 rounded-full object-cover"
+            className="h-9 w-9 shrink-0 rounded-full object-cover"
           />
         ) : (
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary font-bold text-primary-content">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary font-bold text-primary-content">
             {user.name?.charAt(0).toUpperCase()}
           </span>
         )}
+
+        {/* Name beside the picture (hidden on very small screens) */}
+        <span className="hidden max-w-[10rem] truncate text-sm font-semibold sm:inline">
+          {user.name}
+        </span>
       </div>
 
       <ul
